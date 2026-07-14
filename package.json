@@ -1,7 +1,26 @@
 {
   "name": "codepolisher-cli",
   "version": "1.1.0",
-  "description": "AI-powered code review in your terminal",
+  "description": "Provider-independent AI code review in your terminal",
+  "keywords": [
+    "ai",
+    "cli",
+    "code-review",
+    "developer-tools",
+    "openai",
+    "anthropic",
+    "gemini",
+    "ollama"
+  ],
+  "author": "Bear Carrington (ImPerial TeK. Solutions) <ITSolutions_MGNT@proton.me> (https://codepolisher.app)",
+  "homepage": "https://github.com/v1ral-ITS/codepolisher-cli#readme",
+  "bugs": {
+    "url": "https://github.com/v1ral-ITS/codepolisher-cli/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/v1ral-ITS/codepolisher-cli.git"
+  },
   "type": "module",
   "bin": {
     "codepolisher": "bin/codepolisher.js"
@@ -13,7 +32,8 @@
   ],
   "scripts": {
     "test": "node --test",
-    "start": "node bin/codepolisher.js"
+    "start": "node bin/codepolisher.js",
+    "prepublishOnly": "npm test"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -22,6 +42,10 @@
     "chalk": "^5.3.0",
     "commander": "^12.0.0",
     "ora": "^8.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT"
 }
