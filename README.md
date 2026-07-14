@@ -8,7 +8,8 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-a855f7?style=for-the-badge)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-4%20passing-22c55e?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/v1ral-ITS/codepolisher-cli/actions/workflows/test.yml)
 [![Providers](https://img.shields.io/badge/AI%20providers-8-f59e0b?style=for-the-badge)](#supported-providers)
-[![Version](https://img.shields.io/badge/version-1.1.0-3b82f6?style=for-the-badge)](package.json)
+[![npm](https://img.shields.io/npm/v/codepolisher-cli?style=for-the-badge&logo=npm&logoColor=white&color=cb3837)](https://www.npmjs.com/package/codepolisher-cli)
+[![npm downloads](https://img.shields.io/npm/dm/codepolisher-cli?style=for-the-badge&color=3b82f6)](https://www.npmjs.com/package/codepolisher-cli)
 
 <br/>
 
@@ -70,10 +71,12 @@ Larger files automatically use the provider's configured large-file model unless
 
 ## Install
 
-### Directly from GitHub
+### From npm
+
+CodePolisher CLI is officially published on the public npm registry.
 
 ```bash
-npm install -g git+https://github.com/v1ral-ITS/codepolisher-cli.git
+npm install -g codepolisher-cli
 ```
 
 ### From source
