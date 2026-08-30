@@ -4,7 +4,16 @@ import ora from 'ora';
 import { requireConfig } from '../config.js';
 import { invokeLLM } from '../api.js';
 import { buildReviewPrompt, buildSecurityPrompt } from '../prompt.js';
-import { printHeader, printSummary, printComments, printFooter, printError } from '../display.js';
+import { hasMeaningfulChanges, normalizeCorrectedCode } from '../comparison.js';
+import { promptToSaveCorrection, resolveSaveDestination, saveCorrectedCode } from '../save-correction.js';
+import {
+  printHeader,
+  printSummary,
+  printComments,
+  printComparison,
+  printFooter,
+  printError,
+} from '../display.js';
 
 export async function reviewCommand(filePath, options) {
   const config = requireConfig();
@@ -67,7 +76,25 @@ export async function reviewCommand(filePath, options) {
   printHeader(filename, results.detected_language);
   printSummary(results);
   printComments(results.comments);
+  const correctedCode = normalizeCorrectedCode(results.corrected_code);
+  printComparison(code, correctedCode);
   printFooter();
+
+  if (hasMeaningfulChanges(code, correctedCode)) {
+    try {
+      let savedPath = null;
+      if (options.saveAs) {
+        const destination = resolveSaveDestination(options.saveAs, filePath);
+        savedPath = await saveCorrectedCode(correctedCode, destination, filePath);
+      } else {
+        savedPath = await promptToSaveCorrection({ correctedCode, sourcePath: filePath });
+      }
+      if (savedPath) console.log(`Saved corrected script to ${savedPath}\n`);
+    } catch (error) {
+      printError(`Could not save corrected script: ${error.message || error}`);
+      process.exitCode = 1;
+    }
+  }
 
   // Exit with non-zero if critical issues found
   const hasCritical = results.comments?.some(c => c.severity === 'critical' || c.severity === 'security');

@@ -3,15 +3,17 @@ export const REVIEW_SCHEMA = {
   properties: {
     detected_language: { type: "string" },
     summary: { type: "string" },
+    correction_summary: { type: "string" },
     comments: {
       type: "array",
       items: {
         type: "object",
         properties: {
           severity: { type: "string" },
-          line: { type: "number" },
+          line: { type: ["number", "null"] },
           message: { type: "string" },
-          fix: { type: "string" },
+          impact: { type: ["string", "null"] },
+          fix: { type: ["string", "null"] },
         },
       },
     },
@@ -67,12 +69,14 @@ ${code}
 Provide your review as a JSON object with this exact structure:
 - "detected_language": the language you detected (string)
 - "summary": a 2-3 sentence overall assessment of the code quality
+- "correction_summary": a 2-4 sentence explanation of the correction strategy, including important behavior changes or tradeoffs
 - "comments": an array of review comments, each with:
   - "severity": one of "critical", "warning", "suggestion", "performance", "security", "good"
   - "line": the line number (number or null if general)
-  - "message": a clear explanation of the issue or suggestion
-  - "fix": a short code fix or recommendation (string or null)
-- "corrected_code": the full corrected version of the script`;
+  - "message": a detailed, plain-language explanation of the issue or suggestion
+  - "impact": why the issue matters in practice (string or null)
+  - "fix": a concrete code fix or recommendation (string or null)
+- "corrected_code": the complete, runnable corrected script with all fixes applied; return code only, without Markdown fences`;
 }
 
 export function buildSecurityPrompt(code, language = "auto", filename = null) {

@@ -37,7 +37,7 @@
 
 ## How it works
 
-CodePolisher reads a file or standard input, builds a focused review prompt, sends it directly to your selected provider, and renders structured findings for a human or CI pipeline.
+CodePolisher reads a file or standard input, builds a focused review prompt, sends it directly to your selected provider, and renders structured findings for a human or CI pipeline. Every terminal review shows the original and AI-suggested correction side by side. After reviewing the comparison, you can save the corrected script under a new filename without changing the original.
 
 ```
   Source Code           Review Pipeline             Result
@@ -112,7 +112,12 @@ codepolisher review api.ts --rules "Require error handling and input validation.
 
 # Emit machine-readable output for CI
 codepolisher review app.js --output json --fail-on-critical
+
+# Save the suggested correction without an interactive prompt
+codepolisher review app.js --save-as app.fixed.js
 ```
+
+For an interactive file review, CodePolisher asks whether you want to save the suggested correction after displaying it. Press Enter to keep the original unchanged, or answer `y` and accept the suggested `*.polished.*` filename (or enter another new filename). Existing files are never overwritten.
 
 ### Review controls
 
@@ -124,6 +129,7 @@ codepolisher review app.js --output json --fail-on-critical
 | `--strict` | Flag every issue |
 | `--security` | Run a security-focused audit |
 | `--output json` | Produce JSON for scripts and CI |
+| `--save-as <file>` | Save the suggested correction to a new file without prompting |
 | `--fail-on-critical` | Exit with code 1 when critical issues are found |
 
 ---
@@ -170,12 +176,16 @@ src/
 ├── api.js                   # Provider adapters and response parsing
 ├── config.js                # Provider detection and secure local config
 ├── prompt.js                # Review and security prompt builders
+├── comparison.js            # Line alignment and safe side-by-side comparisons
 ├── display.js               # Human-readable terminal output
+├── save-correction.js       # Safe corrected-script filenames and writes
 └── commands/
     ├── review.js            # File/stdin review workflow
     └── config-cmd.js        # Configuration commands
 test/
-└── providers.test.js        # Provider endpoint and environment tests
+├── comparison.test.js       # Comparison, normalization, and terminal safety tests
+├── providers.test.js        # Provider endpoint and environment tests
+└── save-correction.test.js  # Corrected-script save safety tests
 ```
 
 </details>

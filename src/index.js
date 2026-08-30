@@ -7,7 +7,7 @@ const program = new Command();
 program
   .name('codepolisher')
   .description('AI-powered code review in your terminal — by ImPerial TeK. Solutions')
-  .version('1.1.0');
+  .version('1.3.0');
 
 // review command
 program
@@ -19,6 +19,7 @@ program
   .option('--strict', 'Strict mode — flag every issue')
   .option('--security', 'Run a full security audit')
   .option('--output <format>', 'Output format: pretty (default) or json')
+  .option('--save-as <file>', 'Save the AI-suggested correction to a new file')
   .option('--fail-on-critical', 'Exit code 1 if critical/security issues found')
   .action(reviewCommand);
 
